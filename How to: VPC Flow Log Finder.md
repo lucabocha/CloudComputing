@@ -2,9 +2,10 @@
 
 <ol>
 <li>Create a Glue Database. Put a name of it that has not been used already</li>
-<br/>
-<p align="center">
-![GlueDatabaseCreation](https://github.com/lucabocha/CloudComputing/assets/44237986/4365826f-0aca-4595-a13e-edf11b303e3a)
+<p style align="center">
+
+![GlueDatabaseCreation](https://github.com/lucabocha/CloudComputing/assets/44237986/0093c97f-34e3-4873-85c3-e9fb4514c3aa)
+
 </p>
 
 <li>Create a table using Athena</li>
@@ -12,7 +13,9 @@
     <li>Put the name of the DB previously created. Depending on the amount of DBs Athena might take a while to find the DB.</li>
   </ol>
 <p align="center">
+  
 ![AthenaDBSearch](https://github.com/lucabocha/CloudComputing/assets/44237986/6f04e5a0-39c6-4792-8164-d1ac95eb3383)
+
 </p>
 
 </ol>
