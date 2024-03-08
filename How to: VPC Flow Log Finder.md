@@ -18,7 +18,7 @@
   </div>
   
 3. **Create the table in Athena**
-    - Open the query editor and paste the following block of sql code:
+    - Open the query editor and paste the following block of sql code and then run the query:
     
           CREATE EXTERNAL TABLE IF NOT EXISTS <table name> ( 
             version int,
@@ -43,14 +43,14 @@
           LOCATION '<S3 URI where the flowlogs are stored>' 
           TBLPROPERTIES ("skip.header.line.count"="1");
       
-      **Note:** the lines that are between the first parenthesis and the second parenthesis demark the colums that are going to be present on this table
+      **Note:** the lines that are between the first parenthesis and the second parenthesis demark the columns that are going to be present on this table
 
-Depdending on the information you are logging in the flowlogs, you will have to add columns in the sql query mentioned above 
+Depdending on the information/fields you are logging in the flowlogs, you will have to add/remove columns in the sql query mentioned above 
   - For example, for this flow log:
 
         2 123456789010 eni-1235b8ca123456789 172.31.16.139 172.31.16.21 20641 22 6 20 4249 1418530010 1418530070 ACCEPT OK
 
-  We can seeit has 14 fields, each divided by an space
+  We can see it has 14 fields, each divided by an space
 
   2 
   123456789010 
@@ -69,56 +69,82 @@ Depdending on the information you are logging in the flowlogs, you will have to 
 
   If we use the sql code mentioned above, each field will map to a different colum in the table as below: 
 
-  2                         -----> version
-  123456789010              -----> account
-  eni-1235b8ca123456789     -----> interfaceid
-  172.31.16.139             -----> sourceaddres
-  172.31.16.21              -----> destinationaddress
-  20641                     -----> sourceport
-  22                        -----> destinationport
-  6                         -----> protocol
-  20                        -----> numpackets
-  4249                      -----> numbytes
-  1418530010                -----> starttime
-  1418530070                -----> endtime
-  ACCEPT                    -----> action
-  OK                        -----> logstatus
+    2                         -----> version
+    123456789010              -----> account
+    eni-1235b8ca123456789     -----> interfaceid
+    172.31.16.139             -----> sourceaddres
+    172.31.16.21              -----> destinationaddress
+    20641                     -----> sourceport
+    22                        -----> destinationport
+    6                         -----> protocol
+    20                        -----> numpackets
+    4249                      -----> numbytes
+    1418530010                -----> starttime
+    1418530070                -----> endtime
+    ACCEPT                    -----> action
+    OK                        -----> logstatus
 
   Now, if we had a flowlog like this one: 
 
     3 vpc-abcdefab012345678 subnet-aaaaaaaa012345678 i-01234567890123456 eni-1235b8ca123456789 123456789010 IPv4 10.0.0.62 52.213.180.42 5001 43418 10.0.0.62 52.213.180.42 6 63388 1219 1566848933 1566849113 ACCEPT 1 OK
 
-  We would  have to create or use an sql query like this one: 
+  We would have to create a table using the following sql query: 
 
-           CREATE EXTERNAL TABLE IF NOT EXISTS <table name> ( 
-            version int,
-            vpcid
-            subnet
-            ec2instance
-            account string,
-            interfaceid string,
-            sourceaddress string,
-            destinationaddress string,
-            sourceport int,
-            destinationport int,
-            protocol int,
-            numpackets int,
-            numbytes bigint,
-            starttime int,
-            endtime int,
-            action string,
-            logstatus string,
-          ) 
-          
-          PARTITIONED BY (`date` date) 
-          ROW FORMAT DELIMITED 
-          FIELDS TERMINATED BY ' ' 
-          LOCATION '<S3 URI where the flowlogs are stored>' 
-          TBLPROPERTIES ("skip.header.line.count"="1"); 
+    CREATE EXTERNAL TABLE IF NOT EXISTS <table name> ( 
+      version int,
+      vpcid string,
+      subnet string,
+      ec2instance string,
+      interfaceid string,
+      account string,
+      type string,
+      sourceaddress string,
+      destinationaddress string,
+      sourceport int,
+      destinationport int,
+      pktsource string,
+      pktdest string,
+      protocol int,
+      numbytes bigint,
+      numpackets bigint,
+      starttime int,
+      endtime int,
+      action string,
+      tcpflags int,
+      logstatus string,
+    ) 
+              
+    PARTITIONED BY (`date` date) 
+    ROW FORMAT DELIMITED 
+    FIELDS TERMINATED BY ' ' 
+    LOCATION '<S3 URI where the flowlogs are stored>' 
+    TBLPROPERTIES ("skip.header.line.count"="1"); 
+
+  So, at the end, each field will map to a table column in the following manner:
+
+    3                            -----> version 
+    vpc-abcdefab012345678        -----> vpcid
+    subnet-aaaaaaaa012345678     -----> subnet
+    i-01234567890123456          -----> ec2instance
+    eni-1235b8ca123456789        -----> interfaceid
+    123456789010                 -----> account
+    IPv4                         -----> type
+    10.0.0.62                    -----> sourceaddress
+    52.213.180.42                -----> destinationaddress                              
+    5001                         -----> sourceport
+    43418                        -----> destinationport
+    10.0.0.62                    -----> pktsource
+    52.213.180.42                -----> pktdest
+    6                            -----> protocol
+    63388                        -----> numbytes
+    1219                         -----> numpackets
+    1566848933                   -----> starttime
+    1566849113                   -----> endtime
+    ACCEPT                       -----> action
+    1                            -----> tcpflags
+    OK                           -----> logstatus
   
-These fields are the default fields, there is a chance that the flow logs you are storing have additional fields that will have to be mapped to additional sql table 
-
-You can refer to the following documentation that specifies the fields for the flow logs:
+Have in mind that there are more flowlog fields available that the ones mentioned on this article. You can refer to the following documentation that specifies the available fields for the flow logs:
 
 [Logging IP traffic using VPC Flow Logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
 
