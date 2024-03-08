@@ -4,7 +4,7 @@
 
   <div align="center" dir="auto">
 
-  ![GlueDatabaseCreation](https://github.com/lucabocha/CloudComputing/assets/44237986/0093c97f-34e3-4873-85c3-e9fb4514c3aa)
+![CreateGlueDatabase](https://github.com/lucabocha/CloudComputing/assets/44237986/af0883d4-c558-4cf1-aa4d-366996639d58)
 
   </div>
 
@@ -13,8 +13,8 @@
   
   <div align="center" dir="auto">
   
-  ![AthenaDBSearch](https://github.com/lucabocha/CloudComputing/assets/44237986/6f04e5a0-39c6-4792-8164-d1ac95eb3383)
-  
+![AthenaLoadDB](https://github.com/lucabocha/CloudComputing/assets/44237986/47ca76ea-a060-4170-9e16-4bb3d4c43b87)
+
   </div>
   
 3. **Create the table in Athena**
