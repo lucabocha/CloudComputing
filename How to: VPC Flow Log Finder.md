@@ -159,4 +159,4 @@ This will create one partition that refers to the flow logs for each of the days
 
           SELECT DISTINCT "sourceaddress" FROM <table name> WHERE NOT regexp_like(sourceaddres, '^10\.192.*' 
   
-      For this last example, you will be able to donwload the results in a file, which you can process via a script or program. [here]([https:test.com](https://github.com/lucabocha/Programming-Scripting/blob/main/python/flowlog_private_cidr_finder.py) I have a script that will find all private IP ranges 
+      For this last example, you will be able to donwload the results in a file, which you can process via a script or program. [here](https://github.com/lucabocha/Programming-Scripting/blob/main/python/flowlog_private_cidr_finder.py) I have a script that will find all private IP ranges 
