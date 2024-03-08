@@ -109,7 +109,7 @@ You can refer to the following documentation that specifies the fields for the f
 4. **Partition the table using dates**
     - For this you will have to run multiple sql lines to create the partitions
 
-          ALTER TABLE flowlogs_vpc_aaee05cd_august ADD
+          ALTER TABLE <previously created table name> ADD
             PARTITION (`date`='2023-08-01') LOCATION 's3://<bucket name>/<vpc-id>/AWSLogs/<account number>/vpcflowlogs/<region>/2023/08/01'
             PARTITION (`date`='2023-08-02') LOCATION 's3://<bucket name>/<vpc-id>/AWSLogs/<account number>/vpcflowlogs/<region>/2023/08/02'
             PARTITION (`date`='2023-08-03') LOCATION 's3://<bucket name>/<vpc-id>/AWSLogs/<account number>/vpcflowlogs/<region>/2023/08/03'
